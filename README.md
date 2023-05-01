@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![](./Sample-images/mask-group.jpg)
+![](./images/mask-group.jpg)
 
 After catching covid-19 in during the pandemic, I was motivated to come up with a comprehensive Face mask detection model that used Deep Learning to predict whether someone in a live video is wearing a mask or not. I will use a Large scale PTM : VGG16 
 
@@ -15,5 +15,4 @@ Dataset Source [Face Mask ~12K Images Dataset](https://www.kaggle.com/ashishjang
 
 ## VGG16 architecture
 
-![](./Sample-images/vgg16.png)
-
+![](./images/vgg16.png)
