@@ -25,6 +25,7 @@ This model uses the pretrained model which has an architecture as below
 
 ## Installation
 * Unzip the `Mask_detection.zip`
+* Install requirements.txt file with the command `pip install -r requirements.txt`
 * Run `pipenv shell`
 * Run `streamlit run app.py`
 * The Model's website should open in a new Browser window 
