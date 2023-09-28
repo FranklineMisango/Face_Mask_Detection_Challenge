@@ -1,16 +1,37 @@
 import cv2
+import h5py
 import streamlit as st
 import tensorflow as tf
 from PIL import Image
 import numpy as np
+import io
 from keras.models import load_model
 
 st.title("Face Mask Detector")
 image = Image.open('images/cover.png')
 st.image(image, caption='Mask detector')
 
-model = load_model('Mask_detection.h5', compile=False)
+
+#model = load_model('Mask_detection.h5', compile=False)  Testing the azure blob storage function
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+
+# Initialize Azure Blob Storage connection
+connection_string = "DefaultEndpointsProtocol=https;AccountName=dlstoragemisango;AccountKey=yXOb/TngozObUS5H2cajH9IJZfs0H7NEhhkeZWHSgstNf5w7stdSfkIfrEUYUm4Mtd73CYH12HMp+AStsxiZcQ==;EndpointSuffix=core.windows.net"
+container_name = "dlmisangobeta"
+blob_name = "Mask_detection.h5"
+
+blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+container_client = blob_service_client.get_container_client(container_name)
+blob_client = container_client.get_blob_client(blob_name)
+
+# Load the model from Azure Blob Storage
+model_bytes = blob_client.download_blob().readall()
+#model = load_model(io.BytesIO(model_bytes), compile=False)
+model = tf.keras.models.load_model(io.BytesIO(model_bytes))
 model.build((None, 224, 224, 3))
+
+# Use the model in your Streamlit app
+st.write("Model loaded successfully from Azure Blob Storage")
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
