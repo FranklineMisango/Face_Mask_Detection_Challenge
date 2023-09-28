@@ -12,11 +12,12 @@ image = Image.open('images/cover.png')
 st.image(image, caption='Mask detector')
 
 
-#model = load_model('Mask_detection.h5', compile=False)  Testing the azure blob storage function
+#model = load_model('Mask_detection.h5', compile=False)  Testing the azure blob storage function and uncomment for remote testing 
+
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 # Initialize Azure Blob Storage connection
-connection_string = "DefaultEndpointsProtocol=https;AccountName=dlstoragemisango;AccountKey=yXOb/TngozObUS5H2cajH9IJZfs0H7NEhhkeZWHSgstNf5w7stdSfkIfrEUYUm4Mtd73CYH12HMp+AStsxiZcQ==;EndpointSuffix=core.windows.net"
+connection_string = "add string"
 container_name = "dlmisangobeta"
 blob_name = "Mask_detection.h5"
 
