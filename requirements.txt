@@ -3,5 +3,5 @@ tensorflow
 keras
 streamlit
 opencv-python
-PIL
+Pillow
 h5py
