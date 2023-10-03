@@ -10,25 +10,7 @@ from keras.models import load_model
 st.title("Face Mask Detector")
 image = Image.open('images/cover.png')
 st.image(image, caption='Mask detector')
-
-
-#model = load_model('Mask_detection.h5', compile=False)  Testing the azure blob storage function and uncomment for remote testing 
-
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-
-# Initialize Azure Blob Storage connection
-connection_string = "add string"
-container_name = "dlmisangobeta"
-blob_name = "Mask_detection.h5"
-
-blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-container_client = blob_service_client.get_container_client(container_name)
-blob_client = container_client.get_blob_client(blob_name)
-
-# Load the model from Azure Blob Storage
-model_bytes = blob_client.download_blob().readall()
-#model = load_model(io.BytesIO(model_bytes), compile=False)
-model = tf.keras.models.load_model(io.BytesIO(model_bytes))
+model = load_model('Mask_detection.h5', compile=False)
 model.build((None, 224, 224, 3))
 
 # Use the model in your Streamlit app
@@ -63,8 +45,6 @@ def predict_mask(frame):
 
     # Return the frame with the face detection and classification results
     return frame
-
-
 
 # Define the webcam_mask_detection function
 def webcam_mask_detection():
