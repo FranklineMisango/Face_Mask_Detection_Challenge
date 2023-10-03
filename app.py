@@ -5,16 +5,26 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 import io
+import os
+import urllib
 from keras.models import load_model
 
 st.title("Face Mask Detector")
 image = Image.open('images/cover.png')
 st.image(image, caption='Mask detector')
-model = load_model('Mask_detection.h5', compile=False)
-model.build((None, 224, 224, 3))
+
+
+def load_model():
+    if not os.path.isfile('Mask_detection.h5'):
+        urllib.request.urlretrieve('https://github.com/FranklineMisango/Face_Mask_Detection_Challenge/blob/main/Mask_detection.h5', 'Mask_detection.h5')
+    return tf.keras.models.load_model('Mask_detection.h5')
+
+model = load_model()
+#model = load_model('Mask_detection.h5', compile=False)
+#model.build((None, 224, 224, 3))
 
 # Use the model in your Streamlit app
-st.write("Model loaded successfully from Azure Blob Storage")
+st.write("Model loaded successfully")
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
