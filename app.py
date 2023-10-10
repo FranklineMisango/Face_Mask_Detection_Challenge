@@ -26,14 +26,8 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
     # Extract all the contents of zip file in the current directory
     zip_ref.extractall(extracted_dir)
 
-def load_model():
-    if not os.path.isfile('Mask_detection.h5'):
-        urllib.request.urlretrieve('https://github.com/FranklineMisango/Face_Mask_Detection_Challenge/blob/main/Mask_detection.h5', 'Mask_detection.h5')
-    return tf.keras.models.load_model('Mask_detection.h5')
-
-model = load_model()
-#model = load_model('Mask_detection.h5', compile=False)
-#model.build((None, 224, 224, 3))
+model = load_model('Mask_detection.h5', compile=False)
+model.build((None, 224, 224, 3))
 
 # Use the model in your Streamlit app
 st.write("Model loaded successfully")
@@ -77,15 +71,19 @@ def webcam_mask_detection():
         # Capture a frame from the webcam
         ret, frame = cap.read()
         
-        # Apply the mask detection algorithm
-        result = predict_mask(frame)
-        
-        # Display the result on the frame and show it
-        cv2.imshow('Mask Detection', result)
-        
-        # Exit the loop if the 'q' key is pressed
-        if cv2.waitKey(1) == ord('q'):
-            break
+        if ret:  # Check if a frame is successfully captured
+            # Apply the mask detection algorithm
+            result = predict_mask(frame)
+            
+            # Display the result on the frame and show it
+            cv2.imshow('Mask Detection', result)
+            
+            # Exit the loop if the 'q' key is pressed
+            if cv2.waitKey(1) == ord('q'):
+                break
+        else:
+            print("Error: Failed to capture a frame from the webcam.")
+            break  # Exit the loop if a frame cannot be captured
     
     # Release the webcam and destroy the window
     cap.release()
@@ -98,7 +96,7 @@ def video_mask_detection(video_path):
 
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (640, 480))
+    out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (1920, 1080))
 
     while cap.isOpened():
         # Capture a frame from the video
@@ -153,7 +151,7 @@ def app():
                 st.write("The person is wearing a mask.")
             else:
                 st.write("The person is not wearing a mask.")
-
+                
     elif option == "Use Webcam":
         # Display a button to start the webcam mask detection
         if st.button("Start Webcam"):
