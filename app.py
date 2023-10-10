@@ -8,11 +8,23 @@ import io
 import os
 import urllib
 from keras.models import load_model
+import zipfile
 
 st.title("Face Mask Detector")
 image = Image.open('images/cover.png')
 st.image(image, caption='Mask detector')
 
+
+# Specify the path to the ZIP file you want to unzip
+zip_file_path = 'Mask_detection.zip'
+
+# Specify the directory where you want to extract the contents
+extracted_dir = ''
+
+# Create a ZipFile object
+with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+    # Extract all the contents of zip file in the current directory
+    zip_ref.extractall(extracted_dir)
 
 def load_model():
     if not os.path.isfile('Mask_detection.h5'):
